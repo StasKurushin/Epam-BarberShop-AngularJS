@@ -1,0 +1,154 @@
+<section class="container">
+  <mat-horizontal-stepper [linear]='isLinear' #stepper class="stepper">
+    <mat-step [stepControl]="firstFormGroup">
+      <form [formGroup]="firstFormGroup" class='form__first-step'>
+        <mat-card>
+          <ng-template matStepLabel>Fill out your name</ng-template>
+            <h3>Choose Barber</h3>
+            <mat-card-content class="barbers">
+              <section class="barber">
+                <div class='barber-wrapper jake'
+                    matTooltip="Haircut in 1 minute or money back"
+                    matTooltipPosition='left'>
+                    <img src='assets/img/jake.png' class='barber__img'/>
+                </div>
+                <mat-radio-group [(ngModel)]='barber' formControlName="firstCtrl">
+                  <mat-radio-button class="radio"
+                                    (click)="handleInput('Jake', 'barber')"
+                                    [value]="'Jake'">Jake
+                  </mat-radio-button>
+                </mat-radio-group>
+              </section>
+              <section class="barber">
+                <div class='barber-wrapper scratchy'
+                    matTooltip="Fast and bloody"
+                    matTooltipPosition="right">
+                  <img src='assets/img/scratchy.png' class='barber__img'/>
+                </div>
+                <mat-radio-group [(ngModel)]='barber' formControlName="firstCtrl">
+                  <mat-radio-button class="radio"
+                                    (click)="handleInput('Scratchy', 'barber')"
+                                    [value]="'Scratchy'">Scratchy
+                  </mat-radio-button>
+                </mat-radio-group>
+              </section>
+            </mat-card-content>
+            <mat-divider></mat-divider>
+            <h3 class='service__title'>Choose Service</h3>
+            <mat-card-content class="service">
+              <div class="service__checkboxes">
+                <mat-checkbox class="checkbox__service"
+                              (click)="onClickPrise(service.price,i)"
+                              *ngFor='let service of services; let i = index'>{{service.item}}
+                </mat-checkbox>
+              </div>
+            <!-- <p class='price-par'>Total Price</p> -->
+            <p class='price-par__sum'>{{' ' + totalPrice}}<span>$</span></p>
+            </mat-card-content>
+            <mat-card-actions class='service__buttons'>
+              <button mat-raised-button
+                      matStepperNext
+                      color='accent'
+                      *ngIf='isOptional === true'>Next</button>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+    </mat-step>
+
+    <mat-step [stepControl]="secondFormGroup">
+      <form [formGroup]="secondFormGroup">
+        <ng-template matStepLabel>Fill out your address</ng-template>
+        <mat-card class='card'>
+          <mat-form-field>
+            <input matInput placeholder="Name"
+                    formControlName="secondCtrl" #name
+                    (blur)='handleInput(name.value, name.type)'
+                    type='text' required>
+          </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Email"
+                      formControlName="secondCtrl" #email
+                      (blur)='handleInput(email.value, email.type)'
+                      type='email' required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Telephone"
+                      formControlName="secondCtrl" #tel
+                      (blur)='handleInput(tel.value, tel.type)'
+                      type='tel' required #tel>
+            </mat-form-field>
+            <mat-form-field class="">
+              <input matInput [min]="minDate"
+                      [matDatepicker]="picker" #date
+                      (blur)='handleInput(date.value, date.type)'
+                      placeholder="Choose a date"
+                      formControlName="secondCtrl" required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          <mat-card-actions class='service__buttons'>
+            <button mat-raised-button
+                    matStepperPrevious
+                    color='primary'>Back</button>
+            <button mat-raised-button
+                    matStepperNext
+
+                    color='accent'>Next</button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <mat-card class="card">
+        <mat-grid-list cols="2">
+          <mat-grid-tile [colspan]="1">
+            <mat-card-content>
+              <mat-card-subtitle>
+                your barber: {{appointmentState.barber}}
+              </mat-card-subtitle>
+              <mat-card-subtitle>
+                date: {{appointmentState.date}}
+              </mat-card-subtitle>
+              <mat-card-subtitle>
+                name: {{appointmentState.name}}
+              </mat-card-subtitle>
+              <mat-card-subtitle>
+                tel: {{appointmentState.tel}}
+              </mat-card-subtitle>
+              <mat-card-subtitle>
+                total Prise: {{appointmentState.price}}
+              </mat-card-subtitle>
+            </mat-card-content>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <section class="barber">
+              <div class='barber-wrapper scratchy'>
+                <img src='assets/img/scratchy.png' class='barber__img'/>
+              </div>
+            </section>
+          </mat-grid-tile>
+        </mat-grid-list>
+        <mat-card-actions class='service__buttons'>
+          <button mat-raised-button
+                  matStepperPrevious
+                  color='primary'>Back</button>
+          <button mat-raised-button
+                  (click) = 'openSnackBar()'
+                  color='accent'>Book!</button>
+          <button mat-stroked-button
+                  (click)="stepper.reset()"
+                  color='warn'>Reset</button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-step>
+  </mat-horizontal-stepper>
+</section>
+
+
+
+
+
+
+

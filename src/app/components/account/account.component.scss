@@ -1,0 +1,8 @@
+@import '../../../sass/mixins';
+
+.container {
+  @include container();
+  padding-top: 50px;
+}
+
+

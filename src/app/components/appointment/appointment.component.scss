@@ -1,0 +1,103 @@
+@import '../../../sass/mixins';
+
+.container {
+  @include container();
+}
+
+.barber {
+  &-wrapper {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 0 40px;
+    &:hover {
+        cursor: pointer;
+        opacity: 0.8
+    }
+  }
+  &__img {
+    width: 100%;
+  }
+}
+
+.jake {
+  background-color: #2879c5;
+  border: 3px solid #ff9283;
+  padding: 8px;
+}
+
+.scratchy {
+  padding: 8px;
+  background: cadetblue;
+  border: 3px solid darkkhaki;
+}
+
+.barbers {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.form {
+  &__first-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+h3 {
+  text-align: center;
+}
+
+.radio {
+  margin: 2rem 0 0 5rem;
+}
+
+.checkbox {
+  &__service {
+    margin-right: 35px;
+  }
+}
+
+.service {
+  &__title {
+    padding-top: 20px;
+  }
+  &__checkboxes {
+    display: flex;
+    justify-content: center;
+  }
+  &__buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.stepper {
+  width: 80%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.price-par {
+  margin-top: 25px;
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 0;
+  &__sum {
+      color: cornflowerblue;
+      font-size: 26px;
+      text-align: center;
+      &>span {
+          color: #848e98;
+      }
+  }
+}
