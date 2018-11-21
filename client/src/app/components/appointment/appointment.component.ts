@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import { FormGroupDirective, NgForm, FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Services } from '../../interfaces/services';
 import { AppointmentService } from 'src/app/services/appointment.service';
+import {ErrorStateMatcher} from '@angular/material/core';
 
 @Component({
   selector: 'app-appointment',
@@ -28,11 +29,11 @@ export class AppointmentComponent implements OnInit {
     },
   ];
 
-  isLinear = true;
-  isOptional = false;
+  isLinear = false;
   minDate = new Date();
   checked = false;
   totalPrice = 0;
+  barber = '';
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
 
@@ -42,7 +43,10 @@ export class AppointmentComponent implements OnInit {
 
   ngOnInit() {
     this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
+      emailFormControl: ['', Validators.required],
+      telFormControl: ['', Validators.required],
+      nameFormControl: ['', Validators.required],
+      dateFormControl: ['', Validators.required],
     });
     this.firstFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required],
@@ -70,12 +74,12 @@ export class AppointmentComponent implements OnInit {
         this.appointmentService.addPriceToAppointment(this.totalPrice);
       }
     });
-    this.isOptional = this.services.some(el => {
-      return el.checked === true;
-    });
   }
 
   handleInput(value, type) {
+    console.log(typeof value, type);
     this.appointmentService.addToAppointmentState(value, type);
   }
 }
+
+

@@ -1,8 +1,8 @@
 <section class="container">
-  <mat-horizontal-stepper [linear]='isLinear' #stepper class="stepper">
+  <mat-horizontal-stepper  #stepper class="stepper">
     <mat-step [stepControl]="firstFormGroup">
       <form [formGroup]="firstFormGroup" class='form__first-step'>
-        <mat-card>
+        <mat-card class="card">
           <ng-template matStepLabel>Fill out your name</ng-template>
             <h3>Choose Barber</h3>
             <mat-card-content class="barbers">
@@ -12,12 +12,6 @@
                     matTooltipPosition='left'>
                     <img src='assets/img/jake.png' class='barber__img'/>
                 </div>
-                <mat-radio-group formControlName="firstCtrl">
-                  <mat-radio-button class="radio"
-                                    (click)="handleInput('Jake', 'barber')"
-                                    >Jake
-                  </mat-radio-button>
-                </mat-radio-group>
               </section>
               <section class="barber">
                 <div class='barber-wrapper scratchy'
@@ -25,31 +19,34 @@
                     matTooltipPosition="right">
                   <img src='assets/img/scratchy.png' class='barber__img'/>
                 </div>
-                <mat-radio-group formControlName="firstCtrl">
-                  <mat-radio-button class="radio"
-                                    (click)="handleInput('Scratchy', 'barber')"
-                                    >Scratchy
+              </section>
+              <section>
+                <mat-radio-group class='radio-group'>
+                  <mat-radio-button value='Jake' class="radio" #barber1
+                    (click)="handleInput(barber1.value, 'barber')">
+                  </mat-radio-button>
+                  <mat-radio-button value='Scratchy' class="radio" #barber2
+                  (click)="handleInput(barber2.value, 'barber')">
+
                   </mat-radio-button>
                 </mat-radio-group>
               </section>
             </mat-card-content>
-            <mat-divider></mat-divider>
             <h3 class='service__title'>Choose Service</h3>
             <mat-card-content class="service">
               <div class="service__checkboxes">
                 <mat-checkbox class="checkbox__service"
+
                               (click)="onClickPrise(service.price,i)"
                               *ngFor='let service of services; let i = index'>{{service.item}}
                 </mat-checkbox>
               </div>
-            <!-- <p class='price-par'>Total Price</p> -->
             <p class='price-par__sum'>{{totalPrice}}<span>$</span></p>
             </mat-card-content>
             <mat-card-actions class='service__buttons'>
               <button mat-raised-button
                       matStepperNext
-                      color='accent'
-                      *ngIf='isOptional === true'>Next</button>
+                      color='accent'>Next</button>
             </mat-card-actions>
           </mat-card>
         </form>
@@ -61,28 +58,32 @@
         <mat-card class='card'>
           <mat-form-field>
             <input matInput placeholder="Name"
-                    formControlName="secondCtrl" #name
-                    (blur)='handleInput(name.value, name.type)'
+                    formControlName="nameFormControl" #name
+                    name='name'
+                    (keyup)='handleInput(name.value, name.name)'
                     type='text' required>
           </mat-form-field>
             <mat-form-field>
               <input matInput placeholder="Email"
-                      formControlName="secondCtrl" #email
-                      (blur)='handleInput(email.value, email.type)'
+                      formControlName="emailFormControl" #email
+                      (keyup)='handleInput(email.value, email.type)'
                       type='email' required>
             </mat-form-field>
             <mat-form-field>
               <input matInput placeholder="Telephone"
-                      formControlName="secondCtrl" #tel
-                      (blur)='handleInput(tel.value, tel.type)'
+                      formControlName="telFormControl" #tel
+                      (keyup)='handleInput(tel.value, tel.type)'
                       type='tel' required #tel>
             </mat-form-field>
             <mat-form-field class="">
               <input matInput [min]="minDate"
                       [matDatepicker]="picker" #date
-                      (blur)='handleInput(date.value, date.type)'
+                      name='date'
+                      (blur)='handleInput(date.value, date.name)'
+                      (keyup)='handleInput(date.value, date.name)'
+                      (change)='handleInput(date.value, date.name)'
                       placeholder="Choose a date"
-                      formControlName="secondCtrl" required>
+                      formControlName="dateFormControl" required>
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
@@ -107,11 +108,12 @@
               <mat-card-subtitle>
                 your barber: {{appointmentService.appointment.barber}}
               </mat-card-subtitle>
-              <mat-card-subtitle>
-                date: {{appointmentService.appointment.date}}
-              </mat-card-subtitle>
+
               <mat-card-subtitle>
                 name: {{appointmentService.appointment.name}}
+              </mat-card-subtitle>
+              <mat-card-subtitle>
+                email: {{appointmentService.appointment.email}}
               </mat-card-subtitle>
               <mat-card-subtitle>
                 tel: {{appointmentService.appointment.tel}}
@@ -122,9 +124,16 @@
             </mat-card-content>
           </mat-grid-tile>
           <mat-grid-tile>
-            <section class="barber">
+            <section class="barber"
+            *ngIf='appointmentService.appointment.barber === "Scratchy"'>
               <div class='barber-wrapper scratchy'>
                 <img src='assets/img/scratchy.png' class='barber__img'/>
+              </div>
+            </section>
+            <section class="barber"
+            *ngIf='appointmentService.appointment.barber === "Jake"'>
+              <div class='barber-wrapper scratchy'>
+                <img src='assets/img/jake.png' class='barber__img'/>
               </div>
             </section>
           </mat-grid-tile>
@@ -134,7 +143,8 @@
                   matStepperPrevious
                   color='primary'>Back</button>
           <button mat-raised-button
-                  (click) = 'openSnackBar()'
+
+                  (click) = 'appointmentService.createAppointment()'
                   color='accent'>Book!</button>
           <button mat-stroked-button
                   (click)="stepper.reset()"

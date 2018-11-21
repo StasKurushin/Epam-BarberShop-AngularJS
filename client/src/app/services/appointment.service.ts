@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Appointment } from '../interfaces/appointment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -13,18 +14,22 @@ export class AppointmentService {
     date: '',
     price: 0
   };
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
 
   addToAppointmentState(value: string, type: string) {
-    if (type === 'text') {
-      this.appointment.name = value;
-    } else {
-      this.appointment[type] = value;
-    }
+    console.log(value);
+   this.appointment[type] = value;
+   console.log(this.appointment);
   }
 
   addPriceToAppointment(price: number) {
     this.appointment.price = price;
+  }
+
+  createAppointment() {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/appointment', this.appointment);
   }
 }
